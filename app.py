@@ -19,15 +19,16 @@ def create_app() -> Flask:
     """Create and configure the Flask application."""
     app = Flask(__name__, template_folder=os.path.join('src', 'templates'))
 
-    # Configure the app
+    # Configuration Settings
     app.config['SQLALCHEMY_DATABASE_URI'] = os.getenv('DATABASE_URL', 'sqlite:///default.db')
     app.config['SECRET_KEY'] = os.getenv('FLASK_SECRET_KEY', 'default_secret_key_sesame')
 
-    # Initialize database
+    # Initialize database and create tables
     db.init_app(app)
     with app.app_context():
         db.create_all()
 
+    # Routes
     @app.route('/')
     def home() -> str:
         """Render the home page."""
